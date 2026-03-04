@@ -46,9 +46,8 @@ In the code chunk below, load in the packages necessary for your analysis. You s
 
 ```{r}
 #| label: setup
-#| library(tidyverse)
 #| include: false
-
+library(tidyverse)
 ```
 
 # Part 2: Data Context
@@ -70,7 +69,7 @@ Given how large the original data is, we will need to import it directly from NO
 
 ```{r}
 #| label: load-data
-buoy <- read___________("https://www.ndbc.noaa.gov/view_text_file.php?filename=46092h2025.txt.gz&dir=data/historical/stdmet/")
+buoy <- read_table("https://www.ndbc.noaa.gov/view_text_file.php?filename=46092h2025.txt.gz&dir=data/historical/stdmet/")
 ```
 
 Notice that the data is all read in as a character value and the first row contains information that is not data, but additional information about the variables: this is called a "comment" in the data.  
@@ -82,7 +81,7 @@ Using the cheatsheet or the (readr)[https://readr.tidyverse.org/index.html] webs
 
 ```{r}
 #| label: load-data-comment
-read.table("46092h2025.txt")
+five<- read.table("46092h2025.txt")
 ```
 
 
@@ -92,6 +91,9 @@ We want to use snake_case for our variable names. Use the `janitor` package to c
 ```{r}
 #| label: clean-names
 library(janitor)
+five |>
+  clean_names()
+
 ```
 
 ## Step 4: Write the Data Part 1
@@ -101,7 +103,7 @@ Write the data to a `csv` file called `buoy_update.csv`. Be sure to write it to 
 
 ```{r}
 #| label: write-data-part-1
-
+write_csv(buoy, file = "data-raw/bouy_update.csv") 
 ```
 
 
@@ -125,7 +127,7 @@ Here is the code you can use to fix the data without exporting and importing aga
 
 ```{r}
 #| label: parse-double
-buoy_final <- your_file_name |> 
+buoy_final <- five |> 
   mutate(across(.cols = everything(), ~parse_double(.x)))
 ```
 
