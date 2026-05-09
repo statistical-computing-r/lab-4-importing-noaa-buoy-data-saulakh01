@@ -133,7 +133,7 @@ Here is the code you can use to fix the data without exporting and importing aga
 #| eval: false
 buoy_final <- bouy_update |> 
   mutate(across(.cols = everything(), ~parse_double(.x)))
-write_csv(write_csv(buoy, file = "databouy_final.csv"))
+write_csv(buoy, file = "data-clean/bouy_final.csv")
 ```
 
 
@@ -146,7 +146,18 @@ Now that are data is "analytic ready", go ahead and read in your clean data and 
 
 ```{r}
 #| label: monterey-air-temp-viz
+#| warning: false
+#| message: false
 
+ ggplot(buoy_final, aes(x = MM, y = ATMP)) +
+   geom_jitter(aes(color = MM), alpha = 0.1, width = 0.2) +
+   geom_smooth(color = "black") +
+
+  labs(
+    title = "Monterey Bay Canyon Air Temperature in 2025",
+    x = "Month in 2025",
+    y = "Air Temperature in Celsius") +
+  theme_minimal()
 
 ```
 
@@ -161,10 +172,29 @@ For your final portfolio, you will choose a data set to clean and provide an ana
 
 One fun source for data is [Tidy Tuesday](https://github.com/rfordatascience/tidytuesday) which posts a new data set almost every week. It is a great place to find ideas and sources.
 
+```{r}
+# Using R
+# Option 1: tidytuesdayR R package 
+#install.packages("tidytuesdayR")
+
+#tuesdata <- tidytuesdayR::tt_load('2026-01-20')
+## OR
+#tuesdata <- tidytuesdayR::tt_load(2026, week = 3)
+
+#apod <- tuesdata$apod
+
+# Option 2: Read directly from GitHub
+
+apod <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-01-20/apod.csv')
+```
+
+
 **For your found data write a brief description of the data and and provide its source.**
 
->Insert your description and link to your source here. Identify 2-3 research questions you could try to answer with this data.  
-
+>APOD Astronomy Picture of the day are a daily astronomy picture from NASA's website that is provided with a description. THe data is a collection of what picture and what description was posted each day. 
+We can ask the following research questions:
+1) What are the most frequently posted-about types of space features and is there a public interest in a space feature that is associated with this bout of information?
+2) Does public interest in a certain space feature influence what the daily archive posts?
 
 
 
