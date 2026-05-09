@@ -5,6 +5,8 @@ format: gfm
 editor: source
 execute: 
   echo: true
+  embed-resources: true
+  code-tools: true
 ---
 
 
@@ -81,7 +83,7 @@ Using the cheatsheet or the (readr)[https://readr.tidyverse.org/index.html] webs
 
 ```{r}
 #| label: load-data-comment
-five<- read.table("46092h2025.txt")
+five <- read.table("46092h2025.txt")
 ```
 
 
@@ -103,7 +105,8 @@ Write the data to a `csv` file called `buoy_update.csv`. Be sure to write it to 
 
 ```{r}
 #| label: write-data-part-1
-write_csv(buoy, file = "data-raw/bouy_update.csv") 
+write_csv(buoy, file = "bouy_update.csv") 
+bouy_update <- read.csv("bouy_update.csv")
 ```
 
 
@@ -118,7 +121,7 @@ Remember that now we are reading back in a data file of type `csv`. Now when you
 
 ```{r}
 #| label: load-data-again
-
+tbl_df(bouy_update)
 ```
 
 This is great! But we created another problem. Now all of our numeric values are being treated like characters and we don't want that. There are a couple of ways to fix this. We can write and reread in the data setting the column types to `double` or we can use the `readr` parsing functions. 
@@ -127,7 +130,7 @@ Here is the code you can use to fix the data without exporting and importing aga
 
 ```{r}
 #| label: parse-double
-buoy_final <- five |> 
+buoy_final <- buoy_update |> 
   mutate(across(.cols = everything(), ~parse_double(.x)))
 ```
 
