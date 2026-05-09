@@ -105,8 +105,8 @@ Write the data to a `csv` file called `buoy_update.csv`. Be sure to write it to 
 
 ```{r}
 #| label: write-data-part-1
-write_csv(buoy, file = "bouy_update.csv") 
-bouy_update <- read.csv("bouy_update.csv")
+write_csv(buoy, file = "data-clean/bouy_update.csv") 
+bouy_update <- read.csv("data-clean/bouy_update.csv")
 ```
 
 
@@ -130,8 +130,10 @@ Here is the code you can use to fix the data without exporting and importing aga
 
 ```{r}
 #| label: parse-double
-buoy_final <- buoy_update |> 
+#| eval: false
+buoy_final <- bouy_update |> 
   mutate(across(.cols = everything(), ~parse_double(.x)))
+write_csv(write_csv(buoy, file = "databouy_final.csv"))
 ```
 
 
